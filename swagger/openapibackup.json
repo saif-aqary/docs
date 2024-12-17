@@ -1,0 +1,2193 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "HRMS",
+      "version": "1.0"
+    },
+    "servers": [
+      {
+        "url": "/"
+      }
+    ],
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "paths": {
+      "/api/v1/ats": {
+        "post": {
+          "tags": [
+            "ATS"
+          ],
+          "summary": "---",
+          "description": "This endpoint allows uploading one or more resumes (PDF, DOC, DOCX formats) to analyze their content and compare them against the details of a specified job posting. It extracts key applicant information (e.g., name, phone number, email, current position) and calculates a similarity score based on the job's title, description, requirements, and responsibilities.\n",
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "required": [
+                    "file",
+                    "job_id"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "job_id": {
+                      "type": "string",
+                      "description": "The ID of the job posting to compare resumes against."
+                    },
+                    "file": {
+                      "type": "string",
+                      "description": "One or more resume files in PDF, DOC, or DOCX format. Use the `file` parameter multiple times to upload more than one file.\n",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful response with analyzed applicants.",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "applicant": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "email": {
+                              "type": "string",
+                              "description": "The email address extracted from the resume."
+                            },
+                            "file_name": {
+                              "type": "string",
+                              "description": "The original filename of the uploaded resume."
+                            },
+                            "first_name": {
+                              "type": "string",
+                              "description": "The first name extracted from the resume."
+                            },
+                            "id": {
+                              "type": "integer",
+                              "description": "The unique ID of the applicant."
+                            },
+                            "job": {
+                              "type": "object",
+                              "properties": {
+                                "job_description": {
+                                  "type": "string",
+                                  "description": "The description of the job."
+                                },
+                                "job_title": {
+                                  "type": "string",
+                                  "description": "The title of the job."
+                                },
+                                "requirements": {
+                                  "type": "string",
+                                  "description": "The requirements of the job."
+                                },
+                                "responsibilities": {
+                                  "type": "string",
+                                  "description": "The responsibilities of the job."
+                                }
+                              },
+                              "description": "The details of the job posting used for comparison."
+                            },
+                            "phone_number": {
+                              "type": "string",
+                              "description": "The phone number extracted from the resume."
+                            },
+                            "position": {
+                              "type": "string",
+                              "description": "The current position/title of the applicant."
+                            },
+                            "similarity": {
+                              "type": "number",
+                              "description": "Similarity score between the resume and the job posting.",
+                              "format": "float"
+                            },
+                            "url": {
+                              "type": "string",
+                              "description": "The Azure storage URL of the uploaded resume."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - Missing or invalid parameters.",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "No file part in the request"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - Job posting not found.",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "Job not found"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/profile/": {
+        "get": {
+          "tags": [
+            "Profile"
+          ],
+          "summary": "Retrieve profile information for the authenticated user or a specific profile by ID.",
+          "parameters": [
+            {
+              "name": "profile_id",
+              "in": "path",
+              "description": "ID of the profile to retrieve. If not provided, retrieves the profile of the current authenticated user.",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Profile retrieved successfully",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "employee": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string",
+                            "description": "Address of the employee."
+                          },
+                          "bio": {
+                            "type": "string",
+                            "description": "Bio of the employee."
+                          },
+                          "department": {
+                            "type": "string",
+                            "description": "Department of the employee."
+                          },
+                          "education_qualifications": {
+                            "type": "string",
+                            "description": "Educational qualifications of the employee."
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Personal email of the employee."
+                          },
+                          "followers": {
+                            "type": "integer",
+                            "description": "Number of followers the employee has."
+                          },
+                          "followings": {
+                            "type": "integer",
+                            "description": "Number of people the employee is following."
+                          },
+                          "gender": {
+                            "type": "string",
+                            "description": "Gender of the employee."
+                          },
+                          "id": {
+                            "type": "integer",
+                            "description": "Unique identifier for the employee."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the employee."
+                          },
+                          "nationality": {
+                            "type": "string",
+                            "description": "Nationality of the employee."
+                          },
+                          "phone": {
+                            "type": "string",
+                            "description": "Phone number of the employee."
+                          },
+                          "position": {
+                            "type": "string",
+                            "description": "Position of the employee."
+                          },
+                          "posts": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {},
+                              "description": "List of posts created by the employee."
+                            }
+                          },
+                          "work_experience": {
+                            "type": "string",
+                            "description": "Work experience details of the employee."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Profile not found",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "description": "Error message indicating profile was not found."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/profile/follow": {
+        "post": {
+          "tags": [
+            "Profile"
+          ],
+          "summary": "Follow or unfollow a profile.",
+          "requestBody": {
+            "description": "The JSON object containing the employee details to be updated.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "profile_id"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "profile_id": {
+                      "type": "integer",
+                      "description": "The ID of the profile to follow or unfollow."
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Follow status updated successfully",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "followed": {
+                        "type": "object",
+                        "properties": {
+                          "followers": {
+                            "type": "integer",
+                            "description": "Number of followers the followed profile has."
+                          },
+                          "followings": {
+                            "type": "integer",
+                            "description": "Number of people the followed profile is following."
+                          },
+                          "id": {
+                            "type": "integer",
+                            "description": "ID of the followed profile."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Display name of the followed profile."
+                          }
+                        }
+                      },
+                      "follower": {
+                        "type": "object",
+                        "properties": {
+                          "followers": {
+                            "type": "integer",
+                            "description": "Number of followers the follower profile has."
+                          },
+                          "followings": {
+                            "type": "integer",
+                            "description": "Number of people the follower profile is following."
+                          },
+                          "id": {
+                            "type": "integer",
+                            "description": "ID of the follower profile."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Display name of the follower."
+                          }
+                        }
+                      },
+                      "id": {
+                        "type": "integer",
+                        "description": "ID of the follow relationship."
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Message indicating the action performed."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request data",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "description": "Error message indicating why the request failed."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "x-codegen-request-body-name": "body"
+        }
+      },
+      "/api/v1/profile/{profile_id}": {
+        "get": {
+          "tags": [
+            "Profile"
+          ],
+          "summary": "Retrieve profile information for the authenticated user or a specific profile by ID.",
+          "parameters": [
+            {
+              "name": "profile_id",
+              "in": "path",
+              "description": "ID of the profile to retrieve. If not provided, retrieves the profile of the current authenticated user.",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Profile retrieved successfully",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "employee": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string",
+                            "description": "Address of the employee."
+                          },
+                          "bio": {
+                            "type": "string",
+                            "description": "Bio of the employee."
+                          },
+                          "department": {
+                            "type": "string",
+                            "description": "Department of the employee."
+                          },
+                          "education_qualifications": {
+                            "type": "string",
+                            "description": "Educational qualifications of the employee."
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Personal email of the employee."
+                          },
+                          "followers": {
+                            "type": "integer",
+                            "description": "Number of followers the employee has."
+                          },
+                          "followings": {
+                            "type": "integer",
+                            "description": "Number of people the employee is following."
+                          },
+                          "gender": {
+                            "type": "string",
+                            "description": "Gender of the employee."
+                          },
+                          "id": {
+                            "type": "integer",
+                            "description": "Unique identifier for the employee."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the employee."
+                          },
+                          "nationality": {
+                            "type": "string",
+                            "description": "Nationality of the employee."
+                          },
+                          "phone": {
+                            "type": "string",
+                            "description": "Phone number of the employee."
+                          },
+                          "position": {
+                            "type": "string",
+                            "description": "Position of the employee."
+                          },
+                          "posts": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {},
+                              "description": "List of posts created by the employee."
+                            }
+                          },
+                          "work_experience": {
+                            "type": "string",
+                            "description": "Work experience details of the employee."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Profile not found",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "description": "Error message indicating profile was not found."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/applicant": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve applicant(s).",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "applicant_id",
+              "in": "path",
+              "description": "The unique ID of the applicant.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Applicant not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Add a new applicant.",
+          "description": "<br/>",
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cover_letter": {
+                      "type": "string",
+                      "description": "Cover letter for the application",
+                      "example": "I am very interested in this position..."
+                    },
+                    "current_company": {
+                      "type": "string",
+                      "description": "Current company of the applicant",
+                      "example": "Tech Inc."
+                    },
+                    "current_position": {
+                      "type": "string",
+                      "description": "Current position of the applicant",
+                      "example": "Software Engineer"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email address of the applicant",
+                      "example": "johndoe@example.com"
+                    },
+                    "expected_salary": {
+                      "type": "number",
+                      "description": "Expected salary",
+                      "format": "float",
+                      "example": 70000
+                    },
+                    "external_application_id": {
+                      "type": "string",
+                      "description": "External application ID from the platform",
+                      "example": "EXT-12345"
+                    },
+                    "file_name": {
+                      "type": "string",
+                      "description": "File name of the resume",
+                      "example": "resume.pdf"
+                    },
+                    "file_path": {
+                      "type": "string",
+                      "description": "File path of the resume",
+                      "example": "/uploads/resumes/resume.pdf"
+                    },
+                    "file_type": {
+                      "type": "string",
+                      "description": "File type of the resume",
+                      "example": "PDF"
+                    },
+                    "first_name": {
+                      "type": "string",
+                      "description": "First name of the applicant",
+                      "example": "John"
+                    },
+                    "job_id": {
+                      "type": "integer",
+                      "description": "ID of the job the applicant is applying for",
+                      "example": 1
+                    },
+                    "last_name": {
+                      "type": "string",
+                      "description": "Last name of the applicant",
+                      "example": "Doe"
+                    },
+                    "linkedin_profile": {
+                      "type": "string",
+                      "description": "LinkedIn profile URL",
+                      "example": "https://linkedin.com/in/johndoe"
+                    },
+                    "notice_period_days": {
+                      "type": "integer",
+                      "description": "Notice period in days",
+                      "example": 30
+                    },
+                    "phone": {
+                      "type": "string",
+                      "description": "Phone number of the applicant",
+                      "example": "+1234567890"
+                    },
+                    "platform_id": {
+                      "type": "integer",
+                      "description": "ID of the platform where the application was submitted",
+                      "example": 2
+                    },
+                    "portfolio_url": {
+                      "type": "string",
+                      "description": "Portfolio URL",
+                      "example": "https://johndoe.com/portfolio"
+                    },
+                    "salary_currency": {
+                      "type": "string",
+                      "description": "Currency for the expected salary",
+                      "example": "USD"
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "Source of the application",
+                      "example": "Referral"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Status of the application",
+                      "example": "Pending"
+                    },
+                    "total_experience_years": {
+                      "type": "integer",
+                      "description": "Total years of experience",
+                      "example": 5
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Applicant successfully added",
+              "content": {}
+            },
+            "400": {
+              "description": "Bad request due to missing or invalid fields",
+              "content": {}
+            },
+            "404": {
+              "description": "Related resource not found (e.g., job, platform, or skill)",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "x-codegen-request-body-name": "platform_name"
+        }
+      },
+      "/api/v1/recruitment/applicant-skill": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve applicant skills.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "applicant_skill_id",
+              "in": "path",
+              "description": "The ID of the specific applicant skill to retrieve. If not provided, all applicant skills will be returned.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Applicant skill not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/applicant-skill/{applicant_skill_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve applicant skills.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "applicant_skill_id",
+              "in": "path",
+              "description": "The ID of the specific applicant skill to retrieve. If not provided, all applicant skills will be returned.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Applicant skill not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/applicant/{applicant_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve applicant(s).",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "applicant_id",
+              "in": "path",
+              "description": "The unique ID of the applicant.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Applicant not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/application/job/{job_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve applications by job ID.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "job_id",
+              "in": "path",
+              "description": "The unique ID of the job posting.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "No applications found for the given job ID.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/application/platform/{platform_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve applications by platform ID.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "platform_id",
+              "in": "path",
+              "description": "The unique ID of the job platform.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "No applications found for the given platform ID.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/employment-type": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve employment type(s).",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "employment_type_id",
+              "in": "path",
+              "description": "The unique ID of the employment type.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Employment type not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Add a new employment type.",
+          "description": "<br/>",
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "employment_name": {
+                      "type": "string",
+                      "description": "Name of the employment type",
+                      "example": "Full-time"
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Employment type successfully added",
+              "content": {}
+            },
+            "400": {
+              "description": "Failed to add employment type",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "x-codegen-request-body-name": "platform_name"
+        }
+      },
+      "/api/v1/recruitment/employment-type/{employment_type_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve employment type(s).",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "employment_type_id",
+              "in": "path",
+              "description": "The unique ID of the employment type.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Employment type not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/location": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job location information.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "location_id",
+              "in": "path",
+              "description": "The ID of the job location to retrieve.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication failed.",
+              "content": {}
+            },
+            "404": {
+              "description": "Location not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Add a new job location.",
+          "description": "<br/>",
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Full address of the location",
+                      "example": "123 Tech Park, Suite 45"
+                    },
+                    "city_id": {
+                      "type": "integer",
+                      "description": "ID of the city",
+                      "example": 12
+                    },
+                    "country_id": {
+                      "type": "integer",
+                      "description": "ID of the country",
+                      "example": 1
+                    },
+                    "state_id": {
+                      "type": "integer",
+                      "description": "ID of the state",
+                      "example": 5
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Job location successfully added",
+              "content": {}
+            },
+            "400": {
+              "description": "Bad request due to missing or invalid fields",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "x-codegen-request-body-name": "platform_name"
+        }
+      },
+      "/api/v1/recruitment/location/{location_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job location information.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "location_id",
+              "in": "path",
+              "description": "The ID of the job location to retrieve.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication failed.",
+              "content": {}
+            },
+            "404": {
+              "description": "Location not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/platform": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve recruitment platform(s) information.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "platform_id",
+              "in": "path",
+              "description": "The ID of the recruitment platform to retrieve.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication failed.",
+              "content": {}
+            },
+            "404": {
+              "description": "Platform not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Add a new job platform.",
+          "description": "<br/>",
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "api_key": {
+                      "type": "string",
+                      "description": "API key for the job platform",
+                      "example": "your-api-key"
+                    },
+                    "api_secret": {
+                      "type": "string",
+                      "description": "API secret for the job platform",
+                      "example": "your-api-secret"
+                    },
+                    "platform_name": {
+                      "type": "string",
+                      "description": "Name of the job platform",
+                      "example": "LinkedIn"
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Job platform successfully added",
+              "content": {}
+            },
+            "400": {
+              "description": "Bad request due to invalid or missing fields",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "x-codegen-request-body-name": "platform_name"
+        }
+      },
+      "/api/v1/recruitment/platform/{platform_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve recruitment platform(s) information.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "platform_id",
+              "in": "path",
+              "description": "The ID of the recruitment platform to retrieve.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication failed.",
+              "content": {}
+            },
+            "404": {
+              "description": "Platform not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/post": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job post details.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "post_id",
+              "in": "path",
+              "description": "The ID of the job post to retrieve.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication failed.",
+              "content": {}
+            },
+            "404": {
+              "description": "Post not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Add a new job posting.",
+          "description": "<br/>",
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "category_id": {
+                      "type": "integer",
+                      "description": "ID of the job category",
+                      "example": 2
+                    },
+                    "closing_date": {
+                      "type": "string",
+                      "description": "Date when the job posting will close",
+                      "format": "date",
+                      "example": "2024-12-15T00:00:00.000Z"
+                    },
+                    "department_id": {
+                      "type": "integer",
+                      "description": "ID of the department posting the job",
+                      "example": 7
+                    },
+                    "employment_type_id": {
+                      "type": "integer",
+                      "description": "ID of the employment type",
+                      "example": 3
+                    },
+                    "external_job_id": {
+                      "type": "string",
+                      "description": "External job ID from the platform",
+                      "example": "12345-XYZ"
+                    },
+                    "job_description": {
+                      "type": "string",
+                      "description": "Detailed description of the job",
+                      "example": "We are looking for a talented software engineer..."
+                    },
+                    "job_title": {
+                      "type": "string",
+                      "description": "Title of the job",
+                      "example": "Software Engineer"
+                    },
+                    "location_id": {
+                      "type": "integer",
+                      "description": "ID of the job location",
+                      "example": 5
+                    },
+                    "platform_id": {
+                      "type": "integer",
+                      "description": "ID of the job platform",
+                      "example": 1
+                    },
+                    "posting_date": {
+                      "type": "string",
+                      "description": "Date when the job is posted",
+                      "format": "date",
+                      "example": "2024-11-22T00:00:00.000Z"
+                    },
+                    "proficiency_level": {
+                      "type": "string",
+                      "description": "Experience level required for the job",
+                      "example": "Mid-level"
+                    },
+                    "requirements": {
+                      "type": "string",
+                      "description": "Job requirements",
+                      "example": "Bachelor's degree in Computer Science, 3+ years of experience..."
+                    },
+                    "responsibilities": {
+                      "type": "string",
+                      "description": "Job responsibilities",
+                      "example": "Develop and maintain web applications..."
+                    },
+                    "salary_currency": {
+                      "type": "string",
+                      "description": "Currency for the salary",
+                      "example": "USD"
+                    },
+                    "salary_max": {
+                      "type": "number",
+                      "description": "Maximum salary offered",
+                      "format": "float",
+                      "example": 80000
+                    },
+                    "salary_min": {
+                      "type": "number",
+                      "description": "Minimum salary offered",
+                      "format": "float",
+                      "example": 50000
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Status of the job posting",
+                      "example": "Open"
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Job posting successfully added",
+              "content": {}
+            },
+            "400": {
+              "description": "Bad request due to missing or invalid fields",
+              "content": {}
+            },
+            "404": {
+              "description": "Related resource not found (e.g., platform, category, location, department)",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "x-codegen-request-body-name": "platform_name"
+        }
+      },
+      "/api/v1/recruitment/post/department/{department_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job postings by department ID.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "department_id",
+              "in": "path",
+              "description": "The unique ID of the department.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "No job postings found for the department.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/post/location/{location_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job postings by location ID.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "location_id",
+              "in": "path",
+              "description": "The unique ID of the location.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "No job postings found for the location.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/post/page/{page_no}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job post details.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "post_id",
+              "in": "path",
+              "description": "The ID of the job post to retrieve.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication failed.",
+              "content": {}
+            },
+            "404": {
+              "description": "Post not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/post/platform/{platform_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job posts by platform ID.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "platform_id",
+              "in": "path",
+              "description": "The ID of the platform for which to retrieve job posts.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication failed.",
+              "content": {}
+            },
+            "404": {
+              "description": "No job posts found for the specified platform.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/post/{post_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job post details.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "post_id",
+              "in": "path",
+              "description": "The ID of the job post to retrieve.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication failed.",
+              "content": {}
+            },
+            "404": {
+              "description": "Post not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/required-skill": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job required skills.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "required_skill_id",
+              "in": "path",
+              "description": "The unique ID of the required skill.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "No required skills found or the specified skill ID does not exist.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/required-skill/{required_skill_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve job required skills.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "required_skill_id",
+              "in": "path",
+              "description": "The unique ID of the required skill.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "No required skills found or the specified skill ID does not exist.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/resume": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve resume information.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "resume_id",
+              "in": "path",
+              "description": "The ID of the specific resume to retrieve. If not provided, all resumes will be returned.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Resume not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/resume/{resume_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve resume information.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "resume_id",
+              "in": "path",
+              "description": "The ID of the specific resume to retrieve. If not provided, all resumes will be returned.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Resume not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/skill": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve skill information.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "skill_id",
+              "in": "path",
+              "description": "The ID of the specific skill to retrieve. If not provided, all skills will be returned.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Skill not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/recruitment/skill/{skill_id}": {
+        "get": {
+          "tags": [
+            "Recruitment"
+          ],
+          "summary": "Retrieve skill information.",
+          "description": "<br/>",
+          "parameters": [
+            {
+              "name": "skill_id",
+              "in": "path",
+              "description": "The ID of the specific skill to retrieve. If not provided, all skills will be returned.",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {}
+            },
+            "401": {
+              "description": "Unauthorized. Authentication required.",
+              "content": {}
+            },
+            "404": {
+              "description": "Skill not found.",
+              "content": {}
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/refresh": {
+        "post": {
+          "tags": [
+            "Authentication"
+          ],
+          "summary": "Refresh the JWT access token",
+          "responses": {
+            "200": {
+              "description": "New access token issued successfully",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "access_token": {
+                        "type": "string",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized, invalid, or expired refresh token.",
+              "content": {}
+            }
+          }
+        }
+      },
+      "/api/v1/role": {
+        "post": {
+          "tags": [
+            "Roles"
+          ],
+          "summary": "Add a new role",
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "role_name": {
+                      "type": "string",
+                      "description": "Name of the role",
+                      "example": "Admin"
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Role added successfully",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "Role added successfully"
+                      },
+                      "role": {
+                        "type": "object",
+                        "properties": {
+                          "role_id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "role_name": {
+                            "type": "string",
+                            "example": "Admin"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request, invalid input, or missing required fields",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "Couldn't recieve the arguments"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "x-codegen-request-body-name": "body"
+        }
+      },
+      "/api/v1/salary": {
+        "post": {
+          "tags": [
+            "Salaries"
+          ],
+          "summary": "Add a new salary",
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number",
+                      "description": "Amount of the salary",
+                      "format": "float",
+                      "example": 50000
+                    },
+                    "effective_date": {
+                      "type": "string",
+                      "description": "Start date of the salary",
+                      "format": "date",
+                      "example": "2024-01-01T00:00:00.000Z"
+                    },
+                    "employee_id": {
+                      "type": "integer",
+                      "description": "ID of the employee receiving the salary",
+                      "example": 1
+                    },
+                    "end_date": {
+                      "type": "string",
+                      "description": "End date of the salary",
+                      "format": "date",
+                      "example": "2024-12-31T00:00:00.000Z"
+                    },
+                    "is_current": {
+                      "type": "boolean",
+                      "description": "Whether this salary is the current one",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Salary added successfully",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "Salary added successfully"
+                      },
+                      "salary": {
+                        "type": "object",
+                        "properties": {
+                          "amount": {
+                            "type": "number",
+                            "example": 50000
+                          },
+                          "effective_date": {
+                            "type": "string",
+                            "example": "2024-01-01T00:00:00.000Z"
+                          },
+                          "employee_id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "end_date": {
+                            "type": "string",
+                            "example": "2024-12-31T00:00:00.000Z"
+                          },
+                          "is_current": {
+                            "type": "boolean",
+                            "example": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request, invalid input, or missing required fields",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "Couldn't recieve the arguments"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "x-codegen-request-body-name": "body"
+        }
+      },
+      "/api/v1/signup": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Add a new user",
+          "responses": {
+            "200": {
+              "description": "User added successfully",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "User added successfully"
+                      },
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "role_id": {
+                            "type": "integer",
+                            "example": 2
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "johndoe"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request, invalid input, or missing required fields",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "Couldn't recieve the arguments"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/sync/attendances/{company_id}": {
+        "get": {
+          "tags": [
+            "Attendance"
+          ],
+          "summary": "Synchronize attendance records from devices and update the cache",
+          "parameters": [
+            {
+              "name": "company_id",
+              "in": "path",
+              "description": "ID of the company whose devices are used for syncing attendance records",
+              "required": true,
+              "schema": {}
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully synchronized attendance records and updated the cache",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "employee_code": {
+                              "type": "string",
+                              "example": "12345"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "punch_time": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "device_id": {
+                                    "type": "string",
+                                    "example": "Device1"
+                                  },
+                                  "timestamp": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-08-26T08:00:00.000Z"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Attendance synced successfully"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "Couldn't recieve the arguments"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "apiKey",
+          "description": "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+          "name": "Authorization",
+          "in": "header"
+        }
+      }
+    },
+    "x-original-swagger-version": "2.0"
+  }
