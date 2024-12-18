@@ -1,0 +1,51 @@
+---
+title: 'Payslip Created'
+description: 'This event is triggered whenever a new Payslip is created in a company.'
+---
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx Payslip Webhook Events Model
+{
+    "event": "payslip.created",
+    "created_at": "Mon Apr 17 2023 12:14:21",
+    "company_id": 2,
+    "data": [
+        {
+            "name": "employee name",
+            "date": "2023:04:17",
+            "break_duration": "01:15:00",
+            "completed": true,
+            "day_status": "present",
+            "department": "Sales",
+            "first_punch": "09:00:00",
+            "in_office": "08:45:00",
+            "last_punch": "18:00:00",
+            "no_of_check_ins": 5,
+            "no_of_check_outs": 5,
+            "outside_office": "00:30:00",
+            "overtime": "02:00:00",
+            "status": "active",
+            "user_id": 2
+        },
+        {
+            "name": "employee name",
+            "date": "2023:04:18",
+            "break_duration": "01:00:00",
+            "completed": true,
+            "day_status": "present",
+            "department": "Marketing",
+            "first_punch": "08:55:00",
+            "in_office": "08:50:00",
+            "last_punch": "17:30:00",
+            "no_of_check_ins": 6,
+            "no_of_check_outs": 6,
+            "outside_office": "00:20:00",
+            "overtime": "01:30:00",
+            "status": "active",
+            "user_id": 3
+        }
+    ]
+}
+```

@@ -1,0 +1,82 @@
+---
+title: 'App Installed'
+description: 'This event is triggered whenever an app is installed on a company.'
+---
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx App Webhook Events Model
+
+{
+    "event": "app.installed",
+    "created_at": "Mon Apr 17 2023 12:14:21",
+    "company_id": 2,
+    "data": {
+        "id": 101,
+        "name": "Example App",
+        "description": "An example app for demonstration purposes.",
+        "website": "https://example.com",
+        "app_type": "web",
+        "client_id": "client_12345",
+        "client_secret": "secret_abcde12345",
+        "support_email": "support@example.com",
+        "callback_urls": ["https://example.com/callback"],
+        "icon_url": "https://example.com/icon.png",
+        "is_subscribed": true,
+        "webhook_security_strategy": "HMAC",
+        "webhook_url": "https://example.com/webhook",
+        "app_privacy": "public",
+        "webhook_secret": "webhook_secret_12345",
+        "developer": {
+            "id": 501,
+            "name": "developer_name"
+        },
+        "permissions": [
+            {
+                "id": 201,
+                "action": "read",
+                "subject": "users"
+            },
+            {
+                "id": 202,
+                "action": "write",
+                "subject": "orders"
+            }
+        ],
+        "webhook_events": [
+            {
+                "id": 301,
+                "name": "User Created",
+                "description": "Triggered when a new user is created.",
+                "url": "https://example.com/webhook/user_created",
+                "slug": "user.created",
+                "order": 1,
+                "is_active": true,
+                "type": "event",
+                "version": "1.0",
+                "rule": "onCreateUser"
+            },
+            {
+                "id": 302,
+                "name": "Attendance Created",
+                "description": "Triggered when an attendance is created.",
+                "url": "https://example.com/webhook/attendance_created",
+                "slug": "attendance -created",
+                "order": 2,
+                "is_active": true,
+                "type": "attendance.created",
+                "version": "1.0",
+                "rule": "onCreateAttendance"
+            }
+        ],
+        "category": {
+            "id": 401,
+            "name": "E-commerce",
+            "description": "Apps related to online shopping and orders."
+        }
+    }
+}
+
+```
+ 

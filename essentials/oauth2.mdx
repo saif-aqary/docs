@@ -1,0 +1,322 @@
+---
+title: 'Aqary HRMS OAuth 2.0 Authentication'
+description: 'Secure your HRMS integration using OAuth 2.0'
+icon: 'lock'
+---
+
+## Overview
+
+OAuth 2.0 is the industry-standard protocol for authorization that we use to secure access to HRMS APIs. This guide explains how to implement OAuth 2.0 in your application and best practices for secure implementation.
+
+## AqaryOne Authorization Flow
+
+<Frame>
+  <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/0*J1kGIHCITPidKWfH.png" alt="OAuth 2.0 Authorization Flow"/>
+</Frame>
+
+The OAuth 2.0 flow in our HRMS platform follows these steps:
+
+1. Client application requests authorization
+2. User authenticates and grants permissions
+3. Authorization server issues access token
+4. Client uses token to access HRMS APIs
+
+## Grant Types
+
+### Authorization Code Flow (Recommended)
+
+Best for server-side applications. Provides enhanced security through the two-step token retrieval process.
+
+```python
+from authlib.integrations.requests_client import OAuth2Session
+
+client = OAuth2Session(
+    client_id='YOUR_CLIENT_ID',
+    client_secret='YOUR_CLIENT_SECRET',
+    scope='read:employees write:attendance'
+)
+
+# Step 1: Get the authorization URL
+authorization_url, state = client.create_authorization_url(
+    'https://hrms.example.com/oauth/authorize'
+)
+
+# Step 2: Redirect user to authorization URL
+# User grants permissions...
+
+# Step 3: Exchange code for tokens
+token = client.fetch_token(
+    'https://hrms.example.com/oauth/token',
+    authorization_response=callback_url,
+    code_verifier=code_verifier
+)
+```
+
+### Client Credentials Flow
+
+For machine-to-machine applications where user context isn't required.
+
+```python
+from authlib.integrations.requests_client import OAuth2Session
+
+client = OAuth2Session(
+    client_id='YOUR_CLIENT_ID',
+    client_secret='YOUR_CLIENT_SECRET'
+)
+
+token = client.fetch_token(
+    'https://hrms.example.com/oauth/token',
+    grant_type='client_credentials'
+)
+```
+
+## Scopes
+
+Our HRMS API uses scopes to control access to different resources:
+
+<CardGroup>
+  <Card title="Employee Data" icon="users">
+    - `read:employees`
+    - `write:employees`
+    - `delete:employees`
+  </Card>
+  <Card title="Attendance" icon="clock">
+    - `read:attendance`
+    - `write:attendance`
+  </Card>
+  <Card title="Payroll" icon="money-bill">
+    - `read:payroll`
+    - `write:payroll`
+  </Card>
+  <Card title="Documents" icon="file">
+    - `read:documents`
+    - `write:documents`
+  </Card>
+</CardGroup>
+
+## Token Management
+
+### Access Tokens
+
+```json
+{
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "scope": "read:employees write:attendance"
+}
+```
+
+### Refresh Tokens
+
+```python
+def refresh_access_token(refresh_token):
+    client = OAuth2Session(
+        client_id='YOUR_CLIENT_ID',
+        client_secret='YOUR_CLIENT_SECRET'
+    )
+    
+    new_token = client.refresh_token(
+        'https://hrms.example.com/oauth/token',
+        refresh_token=refresh_token
+    )
+    return new_token
+```
+
+## Security Best Practices
+
+<AccordionGroup>
+  <Accordion title="Token Storage">
+    - Never store tokens in localStorage
+    - Use HTTP-only cookies for web applications
+    - Encrypt tokens at rest in your database
+  </Accordion>
+  
+  <Accordion title="PKCE Implementation">
+    ```python
+    import secrets
+    import base64
+    import hashlib
+    
+    # Generate code verifier
+    code_verifier = secrets.token_urlsafe(64)
+    
+    # Generate code challenge
+    code_challenge = base64.urlsafe_b64encode(
+        hashlib.sha256(code_verifier.encode()).digest()
+    ).decode().rstrip('=')
+    ```
+  </Accordion>
+  
+  <Accordion title="Rate Limiting">
+    Implement retry logic with exponential backoff:
+    ```python
+    def make_api_request(token, max_retries=3):
+        retry_count = 0
+        while retry_count < max_retries:
+            try:
+                response = requests.get(
+                    'https://api.hrms.example.com/v1/employees',
+                    headers={'Authorization': f'Bearer {token}'}
+                )
+                return response
+            except RateLimitError:
+                retry_count += 1
+                time.sleep(2 ** retry_count)
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Error Handling
+
+### Common OAuth Errors
+
+<CardGroup>
+  <Card title="invalid_grant" icon="xmark-circle">
+    Invalid authorization code or refresh token
+  </Card>
+  <Card title="invalid_scope" icon="circle-exclamation">
+    Requested scope is invalid or unauthorized
+  </Card>
+  <Card title="invalid_client" icon="user-xmark">
+    Client authentication failed
+  </Card>
+  <Card title="unauthorized_client" icon="lock">
+    Client not authorized for grant type
+  </Card>
+</CardGroup>
+
+### Error Response Format
+
+```json
+{
+  "error": "invalid_request",
+  "error_description": "Missing required parameter: grant_type",
+  "error_uri": "https://docs.example.com/oauth/errors"
+}
+```
+
+## Implementation Examples
+
+### Web Application
+
+```python
+from flask import Flask, session, redirect
+from authlib.integrations.flask_client import OAuth
+
+app = Flask(__name__)
+oauth = OAuth(app)
+
+hrms = oauth.register(
+    name='hrms',
+    client_id='YOUR_CLIENT_ID',
+    client_secret='YOUR_CLIENT_SECRET',
+    authorize_url='https://hrms.example.com/oauth/authorize',
+    token_url='https://hrms.example.com/oauth/token',
+    api_base_url='https://api.hrms.example.com'
+)
+
+@app.route('/login')
+def login():
+    return hrms.authorize_redirect(
+        redirect_uri='https://your-app.com/callback'
+    )
+
+@app.route('/callback')
+def callback():
+    token = hrms.authorize_access_token()
+    session['token'] = token
+    return redirect('/dashboard')
+```
+
+### API Client
+
+```python
+class HRMSClient:
+    def __init__(self, client_id, client_secret):
+        self.oauth = OAuth2Session(
+            client_id=client_id,
+            client_secret=client_secret
+        )
+        
+    def get_employees(self):
+        return self.oauth.get('https://api.hrms.example.com/v1/employees')
+        
+    def mark_attendance(self, employee_id, status):
+        return self.oauth.post(
+            'https://api.hrms.example.com/v1/attendance',
+            json={'employee_id': employee_id, 'status': status}
+        )
+```
+
+## Testing
+
+### Mock OAuth Server
+
+```python
+from unittest.mock import patch
+
+def test_oauth_flow():
+    mock_token = {
+        'access_token': 'test_token',
+        'token_type': 'Bearer',
+        'expires_in': 3600
+    }
+    
+    with patch('oauth2_client.OAuth2Session.fetch_token') as mock_fetch:
+        mock_fetch.return_value = mock_token
+        client = HRMSClient('test_id', 'test_secret')
+        assert client.oauth.token == mock_token
+```
+
+## Troubleshooting Guide
+
+<AccordionGroup>
+  <Accordion title="Token Expiration">
+    Implement automatic token refresh:
+    ```python
+    if token.is_expired():
+        new_token = refresh_access_token(token.refresh_token)
+        save_token(new_token)
+    ```
+  </Accordion>
+  
+  <Accordion title="Scope Issues">
+    Check requested scopes match application configuration:
+    ```python
+    required_scopes = set(['read:employees', 'write:attendance'])
+    token_scopes = set(token['scope'].split())
+    
+    if not required_scopes.issubset(token_scopes):
+        raise InsufficientScopeError()
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Additional Resources
+
+<CardGroup>
+  <Card 
+    title="OAuth 2.0 Specification" 
+    icon="book"
+    href="https://oauth.net/2/"
+  >
+    Official OAuth 2.0 documentation
+  </Card>
+  
+  <Card
+    title="Security Guidelines"
+    icon="shield"
+    href="/security/best-practices"
+  >
+    HRMS security recommendations
+  </Card>
+  
+  <Card
+    title="API Reference"
+    icon="code"
+    href="/api-reference"
+  >
+    Complete API documentation
+  </Card>
+</CardGroup>

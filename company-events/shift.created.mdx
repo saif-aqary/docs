@@ -1,0 +1,38 @@
+---
+title: 'Shift Created'
+description: 'This event is triggered whenever a new Shift is created in a company.'
+---
+
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx Device Webhook Events Model
+{
+    "event": "shift.created",
+    "created_at": "2023-12-17T11:00:00",
+    "data": {
+        "shift": {
+            "id": 123,
+            "name": "Morning Shift",
+            "status": "active",
+            "entity_id": 45,
+            "company_id": 10,
+            "working_days": {
+                "id": 678,
+                "from_hour": "08:00:00",
+                "to_hour": "16:00:00",
+                "break_start": "12:00:00",
+                "break_end": "12:30:00",
+                "entity_id": 45,
+                "workday_id": 2,
+                "company_id": 10,
+                "shift_id": 123,
+                "no_of_break_hours": 0.5,
+                "no_of_working_hours": 7.5
+            },
+            "is_flexible": true
+        }
+    }
+}
+```

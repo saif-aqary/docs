@@ -1,0 +1,21 @@
+---
+title: 'Attendance Created'
+description: 'This event is triggered whenever a new attendance is created in a company.'
+---
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx Attendance Webhook Events Model
+{
+    "event": "attendance.created",
+    "created_at": "2023-12-17T09:30:00", 
+    "company_id": 2,
+    "data": {
+        "attendance_id": 101,
+        "punch_time": "2023-12-17T09:00:00",
+        "device_id": 3,
+        "employee_id": 23
+    }
+}
+```

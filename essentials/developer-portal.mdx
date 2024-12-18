@@ -1,0 +1,242 @@
+---
+title: 'HRMS Developer Portal'
+description: 'Complete guide to managing your HRMS applications and integrations'
+icon: 'code'
+---
+
+## Overview
+
+The HRMS Developer Portal provides a centralized hub for creating, managing, and monitoring your HRMS integrations. This guide walks you through the key features and workflows of the portal.
+
+<Frame>
+  <img 
+    src="/images/portal/dashboard.png" 
+    alt="HRMS Portal Dashboard"
+    style={{ borderRadius: '0.5rem' }}
+  />
+</Frame>
+
+## Portal Navigation
+
+The portal includes several key sections:
+- **Dashboard** - Overview of your applications and activities
+- **Apps** - Manage your HRMS integrations
+- **Webhook Logs** - Monitor event deliveries
+- **Demo Companies** - Test your integrations
+- **Settings** - Configure your account
+
+## Creating Applications
+
+To create a new HRMS integration:
+
+1. Click the "Create App" button in the top right corner
+2. Fill in the basic information:
+   - App Name
+   - Description
+   - Category
+   - Support Email
+   - Website URL
+   - Privacy Settings
+   - Webhook Security Level
+
+<Frame>
+  <img 
+    src="/images/portal/create-app.png" 
+    alt="Create New App Form"
+    style={{ borderRadius: '0.5rem' }}
+  />
+</Frame>
+
+## Managing Permissions
+
+Each application can be granted specific permissions across different HRMS modules:
+
+<CardGroup>
+  <Card title="Dashboard Access" icon="gauge">
+    Read, Write, Delete, and Update permissions for dashboard data
+  </Card>
+  <Card title="Employee Management" icon="users">
+    Control over employee data and records
+  </Card>
+  <Card title="Role Management" icon="user-gear">
+    Permissions for role assignments and modifications
+  </Card>
+  <Card title="Device Management" icon="mobile">
+    Access to device registration and tracking
+  </Card>
+</CardGroup>
+
+### Available Permission Scopes
+
+- **Dashboard**: View and manage dashboard components
+- **Role**: User role management
+- **Device**: Device registration and tracking
+- **Department**: Organizational structure management
+- **Position**: Job position configurations
+- **Accounting**: Financial data access
+- **Employee**: Staff record management
+- **Leave**: Time-off management
+- **Entity**: Company entity control
+
+<Frame>
+  <img 
+    src="/images/portal/permission.png" 
+    alt="Permission Configuration"
+    style={{ borderRadius: '0.5rem' }}
+  />
+</Frame>
+
+## Webhook Configuration
+
+### Event Types
+
+#### Company Events
+Monitor organization-level changes and updates
+
+#### Employee Events
+- Employee Created
+- Employee Updated
+- Employee Deleted
+- Employee Status Updated
+
+#### Holiday Events
+- Holiday Created
+- Holiday Updated
+- Holiday Deleted
+- Holiday Status Updated
+
+#### Payslip Events
+- Payslip Created
+
+#### Attendance Events
+- Attendance Created
+
+#### Document Events
+- Document Created
+- Document Updated
+- Document Deleted
+- Document Status Updated
+
+#### Device Events
+- Device Created
+- Device Updated
+- Device Deleted
+- Device Status Updated
+
+#### Shift Events
+- Shift Created
+- Shift Updated
+- Shift Deleted
+- Shift Status Updated
+
+#### Leave Events
+- Leave Created
+- Leave Updated
+- Leave Deleted
+- Leave Status Updated
+
+#### Job Events
+- Job Created
+- Job Updated
+- Job Deleted
+- Job Status Updated
+
+#### Application Events
+- Application Created
+- Application Updated
+- Application Deleted
+- Application Status Updated
+
+### App-Specific Events
+- App Authorized
+- App Updated
+- App Trial Started/Canceled
+- App Subscription Started/Canceled/Renewed
+- App Feedback Created/Modified
+
+<Frame>
+  <img 
+    src="/images/portal/company-event.png" 
+    alt="Webhook Configuration"
+    style={{ borderRadius: '0.5rem' }}
+  />
+</Frame>
+
+## Managing Applications
+
+The Applications dashboard provides an overview of all your HRMS integrations:
+
+- Application Name and Description
+- Unique Application ID
+- Number of Active Webhook Events
+- Settings and Configuration
+- Detailed View Access
+
+<Frame>
+  <img 
+    src="/images/portal/apps.png" 
+    alt="Application Management"
+    style={{ borderRadius: '0.5rem' }}
+  />
+</Frame>
+
+## Security Best Practices
+
+<AccordionGroup>
+  <Accordion title="Webhook Security">
+    - Use HTTPS endpoints
+    - Implement signature verification
+    - Set up retry policies
+    - Monitor webhook logs
+  </Accordion>
+  
+  <Accordion title="Permission Management">
+    - Follow principle of least privilege
+    - Regularly audit permissions
+    - Revoke unused access
+  </Accordion>
+  
+  <Accordion title="API Security">
+    - Secure storage of credentials
+    - Implement rate limiting
+    - Use OAuth 2.0 for authentication
+  </Accordion>
+</AccordionGroup>
+
+## Testing Your Integration
+
+1. Use Demo Companies for development
+2. Test webhook delivery with sample events
+3. Verify permission scopes
+4. Validate error handling
+5. Check rate limit compliance
+
+## Troubleshooting
+
+<CardGroup>
+  <Card title="Webhook Issues" icon="webhook">
+    - Verify endpoint availability
+    - Check webhook secret
+    - Review event logs
+  </Card>
+  
+  <Card title="Permission Errors" icon="lock">
+    - Confirm scope configuration
+    - Verify token validity
+    - Check role assignments
+  </Card>
+  
+  <Card title="API Problems" icon="code">
+    - Validate credentials
+    - Review rate limits
+    - Check request format
+  </Card>
+</CardGroup>
+
+## Support and Resources
+
+Need help? Here are some resources:
+- [API Documentation](/api-reference)
+- [SDK Documentation](/sdks)
+- [Sample Applications](https://github.com/Aqary-Org/aqaryone-app-template)
+- [Support Portal](mailto:support@example.com)

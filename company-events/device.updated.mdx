@@ -1,0 +1,24 @@
+---
+title: 'Device Updated'
+description: 'This event is triggered whenever an Device information is updated in a company.'
+---
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx Device Webhook Events Model
+{
+    "event": "device.updated",
+    "created_at": "2023-12-17T15:00:00",
+    "data":
+        {
+            "id": 1,
+            "device_name": "Aqary device",
+            "device_ip": "192.168.1.101",
+            "device_port": 8080,
+            "device_type": 1,
+            "company_id": 2,
+            "entity_id": 5
+        }
+}
+```

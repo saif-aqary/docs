@@ -1,0 +1,35 @@
+---
+title: 'Holiday Created'
+description: 'This event is triggered whenever a new holiday is created in a company.'
+---
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx Holiday Webhook Events Model
+
+{
+    "event": "holiday.created",
+    "created_at": "Mon Apr 17 2023 12:14:21",
+    "company_id": 2,
+    "data": {
+        "id": 1,
+        "name": "holiday name",
+        "start_date": "2023-04-17T09:00:00",
+        "end_date": "2023-04-17T17:00:00",
+        "calculation_method": {
+            "id": 2,
+            "name": "calculation method",
+            "description": "Method to calculate holiday impact"
+        },
+        "is_working_day": true,
+        "partial_working_hours": 7.5,
+        "culture": {
+            "id": 1,
+            "name": "culture name",
+            "description": "Cultural significance of the holiday"
+        }
+    }
+}
+```
+ 

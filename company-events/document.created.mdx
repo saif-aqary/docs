@@ -1,0 +1,28 @@
+---
+title: 'Document Created'
+description: 'This event is triggered whenever a new Document is created in a company.'
+---
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx Device Webhook Events Model
+
+{
+    "event": "document.created",
+    "created_at": "2023-12-17T10:00:00",
+    "message": "File successfully saved",
+    "data": {
+        "document": {
+            "id": 123,
+            "name": "example_document.pdf",
+            "path": "/documents/2023/example_document.pdf",
+            "company_id": 45,
+            "document_type": "HR Policy",
+            "parent_id": null,
+            "employee_id": 567,
+            "url": "https://example.com/documents/example_document.pdf"
+        }
+    }
+}
+```

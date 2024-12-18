@@ -1,0 +1,72 @@
+---
+title: 'Job Application Created'
+description: 'This event is triggered whenever a new Application is created in a company.'
+---
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx Job Application Webhook Events Model
+
+{
+    "event": "jobapplication.created",
+    "created_at": "2023-12-17T11:00:00",
+    "data": {
+        "applicant": {
+            "id": 101,
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "john.doe@example.com",
+            "phone": "+1234567890",
+            "linkedin_profile": "https://linkedin.com/in/johndoe",
+            "portfolio_url": "https://johndoeportfolio.com",
+            "current_company": "TechCorp",
+            "current_position": "Software Engineer",
+            "total_experience_years": 5,
+            "application": {
+                "id": 1001,
+                "job": {
+                    "id": 12345,
+                    "job_title": "Senior Software Engineer",
+                    "job_description": "Lead and manage software projects.",
+                    "requirements": "5+ years of experience in software engineering.",
+                    "responsibilities": "Design and implement scalable software solutions.",
+                    "employment_type": {
+                        "id": 1,
+                        "name": "Full-time"
+                    },
+                    "proficiency_level": {
+                        "id": 2,
+                        "name": "Mid-Level"
+                    },
+                    "salary_min": 80000,
+                    "salary_max": 120000,
+                    "salary_currency": "USD",
+                    "status": "open",
+                    "posting_date": "2023-11-01T09:00:00",
+                    "closing_date": "2024-01-01T23:59:59"
+                },
+                "platform": {
+                    "id": 10,
+                    "platform_name": "LinkedIn"
+                },
+                "external_application_id": "EXT-20231234",
+                "status": "submitted",
+                "source": "online",
+                "apply_date": "2023-12-16T12:00:00",
+                "cover_letter": "I am excited to apply for this position.",
+                "expected_salary": 100000,
+                "salary_currency": "USD",
+                "notice_period_days": 30
+            },
+            "resume": {
+                "id": 501,
+                "applicant_id": 101,
+                "file_name": "resume_johndoe.pdf",
+                "file_path": "/uploads/resumes/resume_johndoe.pdf",
+                "file_type": "application/pdf"
+            }
+        }
+    }
+}
+```

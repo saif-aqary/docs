@@ -5,6 +5,12 @@
     "dark": "/logo/AqHRMSDark.png",
     "light": "/logo/AqHRMS.png"
   },
+    "api": {
+      "baseUrl": "https://mintlify.com/api",
+      "auth": {
+        "method": "bearer"
+      }
+    },
   "favicon": "/favicon-32x32.png",
   "colors": {
     "primary": "#4865CD",
@@ -23,7 +29,7 @@
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "http://localhost:3001"
   },
   "tabs": [
     {
@@ -34,8 +40,8 @@
   "anchors": [
     {
       "name": "API Reference",
-      "openapi": "/swagger/openapi3_0.json",
       "url": "api-reference",
+      "openapi": "/swagger/openapi3_0.json",
       "icon": "square-terminal"
     }
   ],
@@ -51,12 +57,68 @@
     {
       "group": "Essentials",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
+        "essentials/developer-portal",
+        "essentials/oauth2",
         "essentials/reusable-snippets"
+      ]
+    },
+
+    {
+      "group": "Company Events",
+      "pages": [
+        "company-events/attendance.created",
+        "company-events/device.created",
+        "company-events/device.deleted",
+        "company-events/device.updated",
+        "company-events/device.status.updated",
+        "company-events/document.created",
+        "company-events/document.deleted",
+        "company-events/document.updated",
+        "company-events/document.status.updated",
+        "company-events/employee.created",
+        "company-events/employee.deleted",
+        "company-events/employee.updated",
+        "company-events/employee.status.updated",
+        "company-events/holiday.created",
+        "company-events/holiday.deleted",
+        "company-events/holiday.updated",
+        "company-events/holiday.status.updated",
+        "company-events/job.created",
+        "company-events/job.deleted",
+        "company-events/job.updated",
+        "company-events/job.status.updated",
+        "company-events/jobapplication.created",
+        "company-events/jobapplication.deleted",
+        "company-events/jobapplication.updated",
+        "company-events/jobapplication.status.updated",
+        "company-events/leave.created",
+        "company-events/leave.deleted",
+        "company-events/leave.updated",
+        "company-events/leave.status.updated",
+        "company-events/shift.created",
+        "company-events/shift.deleted",
+        "company-events/shift.updated",
+        "company-events/shift.status.updated",
+        "company-events/payslip.created"
+      ]
+    },
+
+    {
+      "group": "App Events",
+      "pages": [
+        "app-events/app.company.authorize",
+        "app-events/app.installed",
+        "app-events/app.updated",
+        "app-events/app.uninstalled",
+        "app-events/app.trial.started",
+        "app-events/app.trial.expired",
+        "app-events/app.trial.canceled",
+        "app-events/app.subscription.started",
+        "app-events/app.subscription.canceled",
+        "app-events/app.subscription.expired",
+        "app-events/app.subscription.renewed",
+        "app-events/app.feedback.created",
+        "app-events/app.settings.updated"
       ]
     },
     {
@@ -68,13 +130,14 @@
     {
       "group": "HRMS Endpoints",
       "pages": [
-        "api-reference/department/add-a-new-department"
+        "api-reference/department/add-a-new-department",
+        "api-reference/department/get-departments-of-a-company"
       ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://linkedin.com/company/mintlify"
+    "x": "https://x.com/Aqaryint/",
+    "github": "https://github.com/Aqary-Org",
+    "linkedin": "https://www.linkedin.com/company/aqary-international"
   }
 }

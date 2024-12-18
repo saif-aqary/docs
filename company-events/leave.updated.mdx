@@ -1,0 +1,33 @@
+---
+title: 'Leave Updated'
+description: 'This event is triggered whenever an Leave status is updated in a company.'
+---
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx Leave Webhook Events Model
+{
+    "event": "leave.updated",
+    "created_at": "2023-12-17T14:00:00",
+    "data": {
+        "id": 101,
+        "employee_id": 202,
+        "start_date": "2023-12-20",
+        "end_date": "2023-12-25",
+        "leave_type_id": 3,
+        "status": "approved",
+        "file_url": "https://example.com/certificates/leave_2023.pdf",
+        "has_certificate": true,
+        "can_approve_reject": false,
+        "approver_id": 303,
+        "approval_chain": {
+            "node": "Manager",
+            "approver": "Jane Smith",
+            "status": "approved",
+            "comments": "Leave approved for the holidays.",
+            "action_date": "2023-12-17T13:00:00"
+        }
+    }
+}
+```

@@ -1,0 +1,133 @@
+---
+title: 'Employee Updated'
+description: 'This event is triggered whenever an employee information is updated in a company.'
+---
+
+Below are the webhook store events paired with their respective data schema related to the
+
+
+```mdx Device Webhook Events Model
+
+{
+"event" : "employee.updated",
+"created_at": "Mon Apr 17 2023 12:14:21",
+"company_id": 2,
+"data": {
+   "employee_id": 2,
+   "name": "employee name",
+   "profile": {
+      "id": 1,
+      "name": "profile name",
+      "followers": 4,
+      "following": 6,
+      "bio": "description"
+   },
+   "localized_name": "localized name",
+   "mother_name": "mother name",
+    "user_id": 2,
+    "email": "user@example.com",
+    "personal_email": "personal@example.com",
+    "passport_no": "AE9034580693",
+    "gov_id_no": "235365357664",
+    "gender": {
+        "id": 2,
+        "name": "male",
+    },
+    "marital_status": {"id": 2, "name": "single"},
+    "date_of_marriage": "14-01-2019",
+    "nationality": {"id": 2, "name": "American"},
+    "work_experience": [
+        {
+            "id": 2,
+            "company_name": "company name",
+            "job_title": "MLOps",
+            "job_desc": "MLOps",
+            "from_date": "16-04-2014",
+            "to_date": "16-04-2019",
+        },
+        {
+            "id": 4,
+            "company_name": "company name",
+            "job_title": "Software Engineer",
+            "job_desc": "Software Engineer",
+            "from_date": "11-03-2015",
+            "to_date": "16-04-2019",
+        },
+    ],
+    "visa_type": {"id": 2, "name": "tourist", "no_of_days": 10},
+    "address": {
+         "id": 2,
+         "street_name": "street name",
+         "country": {"id": 2, "name": "UAE"},
+         "state": {"id": 2, "name": "Abu Dhabi"},
+         "city": {"id": 2, "name": "Abu Dhabi"},
+    },
+    "emergency_contacts": {"id": 1, "name": "relative name", "relation": "cousin", "email": "email@example.com", "phone": "43657456"},
+    "education_qualifications": 
+    [
+        {
+            "id": 4, 
+            "degree_name": "degree name",
+            "institution_name": "institution name",
+            "passing_year": "2024",
+            "percentage": "10%",
+        }
+    ],
+    "labour_card_no": "543576656",
+    "blood_group": {"id": 3, "name": "B+"},
+    "shift": {
+        "id": 2, 
+        "name": "aqary shift",
+        "no_of_day": 5,
+        "working_hours": [
+            {
+                "id": 1,
+                "from_hour": "%H:%M:%S",
+                "to_hour": "%H:%M:%S",
+                "no_of_working_hours": 7.0,
+                "break_start": "%H:%M:%S",
+                "break_end": "%H:%M:%S",
+                "no_of_break_hours": 2.0,
+                "status": 1,
+                "shift_id": 2,
+                "workday_id": 2,
+                "company_id": 2,
+                "entity_id": 2,
+            },
+            {
+                "id": 2,
+                "from_hour": "%H:%M:%S",
+                "to_hour": "%H:%M:%S",
+                "no_of_working_hours": 8.0,
+                "break_start": "%H:%M:%S",
+                "break_end": "%H:%M:%S",
+                "no_of_break_hours": 1.0,
+                "status": 1,
+                "shift_id": 2,
+                "workday_id": 2,
+                "company_id": 2,
+                "entity_id": 2,
+            },
+        ],
+    },
+    "phone": 34534523,
+    "hire_date": "12-06-2024",
+    "is_active": true,
+    "biometric_id": 234,
+    "department": {"id": 2, "name": "MLOps"},
+    "position": {"id": 2, "title": "MLOps"},
+    "manager_id": 3,
+    "company": {
+       "id": 2,
+       "name": "company name",
+       "address": "UAE, Abu Dhabi",
+       "phone": "4534675",
+       "email": "email@example.com",
+    },
+    "manager": {
+      "id": 2,
+      "name": "manager name"
+   },
+ }
+}
+```

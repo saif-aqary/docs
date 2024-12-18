@@ -1,33 +1,191 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'Welcome to HRMS API 👋'
+description: 'Your guide to integrating with our Human Resource Management System'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Introduction
 
-## Welcome
-
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+The HRMS API enables you to programmatically access and manage your HR data, automate workflows, and build powerful integrations. Whether you're developing an employee management system, attendance tracking solution, or payroll integration, our API provides the tools you need.
 
 <Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
+  title="Get Started with Our Template"
+  icon="rocket"
+  href="https://github.com/Aqary-Org/aqaryone-app-template"
 >
-  View the OpenAPI specification file
+  Start building with our Python template
 </Card>
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Our API uses OAuth 2.0 for authentication and Bearer tokens for API requests. You'll need to:
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+1. Create an application in the Developer Portal
+2. Configure OAuth 2.0 credentials
+3. Obtain access tokens
+4. Include tokens in API requests
+
+```bash
+# Example API request with Bearer token
+curl -X GET "http://192.168.1.181:4466/api/v1/employees" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
+
+## Available Resources
+
+<CardGroup cols={2}>
+  <Card title="Employee Management" icon="users">
+    Create, update, and manage employee records
+  </Card>
+  <Card title="Attendance Tracking" icon="clock">
+    Monitor check-ins, breaks, and work hours
+  </Card>
+  <Card title="Leave Management" icon="calendar">
+    Handle time-off requests and approvals
+  </Card>
+  <Card title="Document Management" icon="file">
+    Store and retrieve HR documents
+  </Card>
+</CardGroup>
+
+## Webhook Events
+
+Stay synchronized with real-time updates through our webhook system:
+
+<AccordionGroup>
+  <Accordion title="Employee Events">
+    - Employee Created
+    - Employee Updated
+    - Employee Deleted
+    - Employee Status Updated
+  </Accordion>
+  
+  <Accordion title="Attendance Events">
+    - Attendance Created
+    - Check-in Recorded
+    - Check-out Recorded
+  </Accordion>
+  
+  <Accordion title="Leave Events">
+    - Leave Requested
+    - Leave Approved/Rejected
+    - Leave Cancelled
+  </Accordion>
+</AccordionGroup>
+
+## Rate Limiting
+
+To ensure stable service for all users, our API implements rate limiting:
+
+| Plan      | Requests per minute | Daily limit |
+|-----------|---------------------|-------------|
+| Free      | 60                  | 10,000      |
+| Pro       | 120                 | 50,000      |
+| Enterprise| Custom              | Custom      |
+
+## Development Tools
+
+<CardGroup>
+  <Card
+    title="API Reference"
+    icon="book"
+    href="/api-reference"
+  >
+    Explore our comprehensive API documentation
+  </Card>
+  
+  <Card
+    title="Developer Portal"
+    icon="window"
+    href="/developer-portal"
+  >
+    Manage your applications and webhooks
+  </Card>
+  
+  <Card
+    title="SDK Documentation"
+    icon="code"
+    href="/sdks"
+  >
+    Official SDKs and client libraries
+  </Card>
+  
+  <Card
+    title="Sample Apps"
+    icon="rocket"
+    href="https://github.com/Aqary-Org/aqaryone-app-template"
+  >
+    Example implementations and templates
+  </Card>
+</CardGroup>
+
+## Quick Start
+
+Get started with our API in minutes:
+
+<Steps>
+  <Step title="Create Your App">
+    Register your application in the [Developer Portal](/developer-portal)
+  </Step>
+  <Step title="Configure OAuth">
+    Set up OAuth 2.0 credentials and configure your callback URLs
+  </Step>
+  <Step title="Subscribe to Events">
+    Configure webhooks to receive real-time updates
+  </Step>
+  <Step title="Start Development">
+    Use our [Python template](https://github.com/Aqary-Org/aqaryone-app-template) to jumpstart your integration
+  </Step>
+</Steps>
+
+## Security
+
+We take security seriously. Your data is protected with:
+
+- OAuth 2.0 authentication
+- HTTPS encryption
+- Webhook signature verification
+- Regular security audits
+- Rate limiting and abuse prevention
+
+<Note>
+  Never share your API credentials or webhook secrets. Use environment variables
+  to manage sensitive information in your applications.
+</Note>
+
+## Support
+
+Need help with your integration?
+
+<CardGroup>
+  <Card
+    title="Documentation"
+    icon="book"
+    href="/docs"
+  >
+    Browse our detailed guides and tutorials
+  </Card>
+  
+  <Card
+    title="API Status"
+    icon="signal"
+    href="/status"
+  >
+    Check our API and service status
+  </Card>
+  
+  <Card
+    title="GitHub Issues"
+    icon="github"
+    href="https://github.com/Aqary-Org/aqaryone-app-template/issues"
+  >
+    Report bugs and request features
+  </Card>
+  
+  <Card
+    title="Support"
+    icon="headset"
+    href="mailto:support@example.com"
+  >
+    Contact our developer support team
+  </Card>
+</CardGroup>
